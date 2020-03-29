@@ -1,0 +1,119 @@
+--- /dev/null
++++ b/Make.sys
+@@ -0,0 +1,71 @@
++#########################################################################
++#
++#  System-dependent definitions suitable for compiling xcrysden using
++#  a system shared libraries (needs Tcl/Tk/Togl/GL/GLU/FFTW libraries)
++#
++########################################################################
++
++
++#------------------------------------------------------------------------
++# if you have a GNU make it is better to set the MAKE variable to point
++# to gnu make
++#------------------------------------------------------------------------
++MAKE = make
++
++
++#------------------------------------------------------------------------
++# compilers & flags
++#------------------------------------------------------------------------
++# C-preprocessor flags
++CPPFLAGS ?=
++# C-compiler flags
++CFLAGS += -ffast-math -funroll-loops -fPIC -pedantic -Wall
++
++CC     = gcc
++#LDLIB  = -ldl
++MATH   = -lm -lc
++
++
++FFLAGS ?= -fdefault-double-8 -fdefault-real-8 -O2
++FC     = gfortran
++
++#-------------------------------------------
++#debug options
++#CFLAGS = -g
++#-------------------------------------------
++
++
++#------------------------------------------------------------------------
++# X-libraries & include files
++#------------------------------------------------------------------------
++X_LIB     = -lXmu -lX11
++X_INCDIR  =
++
++#------------------------------------------------------------------------
++#
++# Libraries
++#
++
++TCL_LIB      = -ltcl$(TCL_VER2)
++TK_LIB       = -ltk$(TCL_VER2)
++TOGL_LIB     = -lTogl
++GLU_LIB      = -lGLU
++GL_LIB       = -lGL
++FFTW3_LIB    = -lfftw3
++EXT_LIB      =
++# this is only used for some testing purposes
++#MESCHACH_LIB = -lmeschach
++
++#
++# Include directories
++#
++
++TCL_INCDIR      = -I/usr/include/tcl$(TCL_VER2)
++TK_INCDIR       =
++TOGL_INCDIR     =
++GL_INCDIR       =
++FFTW3_INCDIR    =
++# this is only used for some testing purposes
++#MESCHACH_INCDIR =
++
++#------------------------------------------------------------------------
+--- a/Makefile
++++ b/Makefile
+@@ -18,7 +18,7 @@
+ 
+ all: tcl tk mesa togl fftw xcrysden
+ #  meschach 
+-xcrysden: usage bwidget bindir src-C src-F src-Tcl
++xcrysden: usage bindir src-C src-F src-Tcl
+ 
+ usage: $(TOPDIR)/docs/xcrysden.1
+ 	man $(TOPDIR)/docs/xcrysden.1 | awk 'BEGIN {lprint=0; print "## do not edit changes will be lost (file automatically generated)\n"; } /SYNOPSIS/ { lprint=1; } /SEE ALSO/ { lprint=0; } /a*/ { if (lprint) print; }' > usage
+@@ -234,9 +234,9 @@
+ #
+ # ------------------------------------------------------------------------
+ 
+-prefix   ?= /usr/local
++prefix   ?= $(DESTDIR)/usr
+ version  := $(shell cat version)
+-xcrysden  = xcrysden-$(version)
++xcrysden  = xcrysden
+ 
+ install: xcrysden
+ 	@echo
+@@ -259,7 +259,7 @@
+ 	if test -d examples; then \
+ 		install -m755 -d $(prefix)/share/doc/$(xcrysden)/examples; \
+ 		cp -a   examples/* $(prefix)/share/doc/$(xcrysden)/examples; \
+-		ln -sf $(prefix)/share/doc/$(xcrysden)/examples $(prefix)/share/$(xcrysden)/examples; \
++		ln -sf /usr/share/doc/$(xcrysden)/examples $(prefix)/share/$(xcrysden)/examples; \
+ 	fi; \
+ 	\
+ 	install -m755 -d $(prefix)/share/man/man1
+--- a/sys_utils/wrappers.sh
++++ b/sys_utils/wrappers.sh
+@@ -5,8 +5,8 @@
+ #!/bin/sh -f
+ 
+ # simple wrapper to run $cmd
+-XCRYSDEN_TOPDIR="$prefix/share/$xcrysden"
+-XCRYSDEN_LIB_BINDIR="$prefix/lib/$xcrysden"
++XCRYSDEN_TOPDIR="/usr/share/xcrysden"
++XCRYSDEN_LIB_BINDIR="/usr/lib/xcrysden"
+ export XCRYSDEN_TOPDIR
+ export XCRYSDEN_LIB_BINDIR
+ 

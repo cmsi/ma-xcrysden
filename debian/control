@@ -1,0 +1,23 @@
+Source: xcrysden
+Section: scientific
+Priority: optional
+Maintainer: Synge Todo <wistaria@phys.s.u-tokyo.ac.jp>
+Build-Depends: debhelper (>= 8.0.0), gfortran, libfftw3-dev, libgl1-mesa-dev, libgl2ps-dev, libglu1-mesa-dev, libmeschach-dev, libtogl-dev, libx11-dev, libxmu-dev, libxmu-headers, tcl-dev, tk-dev
+Standards-Version: 3.9.3
+Homepage: http://www.xcrysden.org/
+
+Package: xcrysden
+Architecture: any
+Depends: bwidget, gawk, imagemagick, openbabel, ${shlibs:Depends}, ${misc:Depends}
+Description: Crystalline and Molecular Structure Visualizer
+ XCrySDen is a crystalline and molecular structure visualisation
+ program, which aims at display of isosurfaces and contours, which can
+ be superimposed on crystalline structures and interactively rotated
+ and manipulated. It can run on most UNIX platforms, without any
+ special hardware requirements.
+ .
+ XCrySDen allows for real-time capture of display. Several movie encoders
+ are supported, in particular for Animated-GIF convert (imagemagick),
+ gifsicle, or whirlgif are necessary. For AVI/MPEG mencoder or
+ ppmtompeg (netpbm) is required. For window dumps either imagemagick or
+ xwd (x11-apps) needs to be present.
